@@ -1,0 +1,16 @@
+name: trigger chatapp repo
+
+on:
+  push:
+    branches:
+     - main
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: trigger chatapp repo to build-and-push image
+        uses: peter-evans/repository-dispatch@v1
+        with:
+         token: ${{ secrets.TOKEN_TO_TRIGGER }}
+         repository: olawaleade/chatapp
+         event-type: my-event
