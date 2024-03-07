@@ -1,4 +1,4 @@
-name: trigger chatapp repo
+name: trigger for chatapp repo
 
 on:
   push:
