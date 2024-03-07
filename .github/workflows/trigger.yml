@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: trigger chatapp repo to build-and-push image
-        uses: peter-evans/repository-dispatch@v1
+        uses: peter-evans/repository-dispatch@v3
         with:
          token: ${{ secrets.TOKEN_TO_TRIGGER }}
          repository: olawaleade/chatapp
