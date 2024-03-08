@@ -5,8 +5,8 @@ on:
     branches:
       - main
   
-  #repository-dispatch:
-     # types: [success-event]
+  repository_dispatch:
+     types: [success-event]
 
 jobs:
   trigger-repo-and-pull-images:
