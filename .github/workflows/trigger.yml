@@ -1,12 +1,15 @@
-name: trigger for chatapp
+name: trigger for chatapp-repo and pull Docker Images
 
 on:
   push:
     branches:
      - main
+  repository_dispatch:
+    types: [success-event]
+
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: trigger chatapp repo to build-and-push image
         uses: peter-evans/repository-dispatch@v3
@@ -14,3 +17,14 @@ jobs:
          token: ${{ secrets.TOKEN_TO_TRIGGER }}
          repository: olawaleade/chatapp
          event-type: my-event
+      
+      - name: Pull Latest Docker Images
+        if: github.event_name == 'repository_dispatch' && github.event.client_payload.success
+        run: |
+          docker pull olawde/backend:${{ github.event.client_payload.timestamp }}
+          docker pull olawde/frontend:${{ github.event.client_payload.timestamp }}
+
+      - name: Checkout Repository B
+        uses: actions/checkout@v3
+        with:
+          repository: olawaleade/helm
