@@ -5,8 +5,8 @@ on:
     branches:
       - main
   
-  #repository_dispatch:
-  #  types: [success-event]
+  #repository-dispatch:
+     # types: [success-event]
 
 jobs:
   trigger-repo-and-pull-images:
@@ -21,7 +21,7 @@ jobs:
           event-type: my-event
       
       - name: Pull Latest Docker Images
-        if: ${{ github.event_name == 'repository_dispatch' && github.event.event.client_payload.message == 'Build and push successful' }}
+        if: ${{ github.event_name == 'repository-dispatch' && github.event.event.client_payload.message == 'Build and push successful' }}
         run: |
           docker pull olawde/backend:${{ github.event.client_payload.timestamp }}
           docker pull olawde/frontend:${{ github.event.client_payload.timestamp }}
