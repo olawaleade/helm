@@ -1,8 +1,9 @@
 name:  pull Docker Images
 
 on:
-  repository_dispatch:
-    types: [success-event]
+  push:
+    branches:
+      - main
 
 jobs:
   trigger-repo-and-pull-images:
