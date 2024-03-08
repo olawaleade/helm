@@ -5,27 +5,19 @@ on:
     types: [success-event]
 
 jobs:
-  pull-images:
-    if: ${{ github.event.client_payload.message == 'Build and push successful' }}
+  trigger-repo-and-pull-images:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Pull Backend Docker Images
-        run: docker pull olawde/backend:${{ github.event.client_payload.timestamp }}
-
-      - name: Pull frontend Docker Images
-        run: docker pull olawde/frontend:${{ github.event.client_payload.timestamp }}
-  #build:
-   # runs-on: ubuntu-latest
-    #steps:
-     # - name: trigger chatapp repo to build-and-push image
-      #  uses: peter-evans/repository-dispatch@v3
-       # with:
-        # token: ${{ secrets.TOKEN_TO_TRIGGER }}
-         #repository: olawaleade/chatapp
-         #event-type: my-event
+      - name: trigger chatapp repo to build-and-push image
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.TOKEN_TO_TRIGGER }}
+          repository: olawaleade/chatapp
+          event-type: my-event
       
-      #- name: Pull Latest Docker Images
-       ##run: |
-         # docker pull olawde/backend:${{ github.event.client_payload.timestamp }}
-          #docker pull olawde/frontend:${{ github.event.client_payload.timestamp }}
+      - name: Pull Latest Docker Images
+        if: ${{ github.event_name == 'repository_dispatch' && github.event.event.client_payload.message == 'Build and push successful' }}
+        run: |
+          docker pull olawde/backend:${{ github.event.client_payload.timestamp }}
+          docker pull olawde/frontend:${{ github.event.client_payload.timestamp }}
